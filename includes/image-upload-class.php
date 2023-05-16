@@ -1,20 +1,20 @@
 <?php 
-require 'includes/userController.php';
+require_once 'userController.php';
 
 class ImageUpload{
 	public $conn;
-	public $tableName = "tblimages";
-
+	public $tableName = "tbladmin";
+	
 	// Class properties =================
 
 	private $image_name; // the image name.
 	private $image_type; // the image type.
 	private $image_size; // the image size.
 	private $image_temp; // the temporary location where the uploaded image is stored.
-	private $uploads_folder = "./uploads/"; // the uploads folder.
+	private $uploads_folder = "../uploads/"; // the uploads folder.
 	private $upload_max_size = 10*1024*1024; // setting the max upload file size to 2MB.
 
-	// Next i need a property to hold an array of allowed image types.
+	// Next we need a property to hold an array of allowed image types.
 	private $allowed_image_types = ["image/jpeg", "image/jpg", "image/png", "image/gif"];
 
 	// And last i need a property to store any validation error.
@@ -27,25 +27,29 @@ class ImageUpload{
 	// I need the class constructor to initialize my properties.
 	// The constructor takes as an argument the $_FILES superglobal variable,
 	// when we creating a new object in the html file.
-	public function __construct($files){
+	public function __construct($files, $ID){
+		 //echo $ID;exit;
 		$this->image_name = $files['image']['name'];
 		$this->image_size = $files['image']['size'];
 		$this->image_temp = $files['image']['tmp_name'];
 		$this->image_type = $files['image']['type'];
-
+		//$finaldst = "http://localhost/webcomfo-admin/uploads/";
+		$ext 		      = pathinfo($this->image_name, PATHINFO_EXTENSION); 
+		$picFullName      = 'wc_'.$this->image_name;
+		$this->image_name = $picFullName;
 		$this->isImage();
 		$this->imageNameValidation();
 		$this->sizeValidation();
 		$this->checkFile();
-
-		// Here i have to check if the error property has no errors stored,
-		// and then i will call the moveFile method.
+		//$this->resize_imagejpg($picFullName,400, 400, $finaldst);
+		
+		//  check if the error property has no errors stored,
+		// and then call the moveFile method.
 		if($this->error == null){
 			$this->moveFile();
 		}
-
-		if($this->error == null){
-			$this->recordImage();
+		if($this->error == null){ 
+			$this->recordImage($ID);
 		}
 	}
 
@@ -84,17 +88,20 @@ class ImageUpload{
 	// The method will return an error if the file exists.
 	private function checkFile(){
 		if(file_exists($this->uploads_folder.$this->image_name)){
+			//echo "exist image";exit;
 			return $this->error = "File already exists in folder";
+			//unlink($this->image_name);
 		}
 	}
 
-
+	 
+	 
 	// move the file from the temporary storage to our
 	// uploads folder.
 	// When we uploading a file, php is storing that file to a temporary
 	// location in the server. Then we have to move the file to our uploads folder.
 	private function moveFile(){
-		// I am gonna use the move_uploaded_file function to move the file
+		// use move_uploaded_file function to move the file
 		// from the temporary location to my uploads folder.
 		if(!move_uploaded_file($this->image_temp, $this->uploads_folder.$this->image_name)){
 			return $this->error = "There was an error, please try again";
@@ -103,24 +110,20 @@ class ImageUpload{
 
 
 	// method to store the image name to the database.
-	private function recordImage(){
-		// First i connect to the mysql server and the database;
-
-		// $mysqli = new mysqli('localhost','admin','admin_pass','tutorials');
+	private function recordImage($ID){
+		// db connection
 		$db         = new DatabaseConnection;
         $this->conn = $db->conn;
 
-		// Next i will execute an insert query.
-		$sqlQuery = "INSERT INTO $this->tableName(image_name)VALUES('$this->image_name')";
-		$result   = mysqli_query($this->conn, $sqlQuery);
+		// Next update the image in db.
+		 $sqlQuery = "UPDATE ". $this->tableName." SET admin_photo = '$this->image_name'  WHERE admin_id = $ID";
+		$result    = mysqli_query($this->conn, $sqlQuery);
 		 
-		//$mysqli->query("INSERT INTO images(image_name)VALUES('$this->image_name')");
-
-		// Next i will check the affected_rows property to see if the query
+		//  check the affected_rows property to see if the query
 		// was successful.
 		if($this->conn->affected_rows != 1){
 			// If something went wrong and the image name was not inserted in the
-			// database, i will remove the uploaded file from the folder.
+			// database,  remove the uploaded file from the folder.
 			if(file_exists($this->uploads_folder.$this->image_name)){
 				unlink($this->uploads_folder.$this->image_name);
 			}

@@ -25,4 +25,21 @@
   <!-- Custom style CSS -->
   <link rel="stylesheet" href="assets/css/custom.css">
   <link rel='shortcut icon' type='image/x-icon' href='assets/img/webdesignpakistan.png' />
+  <style type="text/css">
+
+.form-control:focus {
+
+    color: #495057 !important;
+
+    background-color: #fff;
+
+    border-color: #e97c7c !important;
+
+    outline: 0;
+
+    /*box-shadow: 0 0 0 0.2rem rgb(190 18 18 / 25%) !important;*/
+
+}
+
+</style>
 </head>

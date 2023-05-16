@@ -1,7 +1,9 @@
 <?php 
  
 // check session
-require 'includes/checkSession.php';
+// require 'includes/checkSession.php';
+
+require_once 'includes/include.php';
 
 $PageTitle   = 'Dashboard'; 
 $Page      = 'dashboard';

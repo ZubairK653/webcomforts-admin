@@ -27,11 +27,42 @@ class DatabaseConnection
         }
         return $this->conn = $conn;
     }
+    public function Run($sqlQuery) {
+
+      $result = mysqli_query($this->conn, $sqlQuery);
+  
+      if(!$result){
+        die('Error in query: '. mysqli_error($this->conn));
+      }
+      return $result;
+    }
+  
+    public function getNumRows($sqlQuery) {
+		$result = mysqli_query($this->conn, $sqlQuery);
+		if(!$result){
+			die('Error in query: '. mysqli_error($this->conn));
+		}
+		$numRows = mysqli_num_rows($result);
+		return $numRows;
+	}
+    public function getData($sqlQuery) {
+
+		$result = mysqli_query($this->conn, $sqlQuery);
+
+		if(!$result){
+			die('Error in query: '. mysqli_error($this->conn));
+		}
+		
+		$data = mysqli_fetch_array($result, MYSQLI_ASSOC) ;
+			
+		return $data;
+	}
     // vlaidate form input
-    public function  protectData($data) {
+      public function  protectData($data) {
         $data = trim($data);
         $data = stripslashes($data);
+        $data = strip_tags($data);
         $data = htmlspecialchars($data);
-        return mysqli_real_escape_string($this->conn,$data);
+        return $data;
       }
 }

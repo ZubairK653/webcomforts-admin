@@ -1,17 +1,29 @@
 <?php
- require 'database.php';
+include_once 'database.php';
 
 class adminController{
 
     public $conn;
+    public $userid;
 
     public function __construct()
     {
+        
         $db         = new DatabaseConnection;
         $this->conn = $db->conn;
            
     }
     public $admintable = "tbladmin";
+
+    public function Run($sqlQuery) {
+
+		$result = mysqli_query($this->conn, $sqlQuery);
+
+		if(!$result){
+			die('Error in query: '. mysqli_error($this->conn));
+		}
+		return $result;
+	}
 
     public function getData($sqlQuery) {
 
@@ -41,13 +53,6 @@ class adminController{
 			SELECT admin_id, admin_email, admin_password, admin_username, admin_name
 			FROM ".$this->admintable." WHERE admin_email='".$username."' OR admin_username ='".$username."'  AND admin_password='".$password."'";
             return  $this->getData($sqlQuery);
-    }
-
-    public function checkLogin(){
-        if(empty($_SESSION['userid'])) {
-			header("Location:login.php?error=session");
-		}
-         
     }
 
     public function logOut(){
@@ -131,7 +136,7 @@ class adminController{
 
 }
 
-$user = new adminController;
+$user = new adminController();
 
 class categories{
 

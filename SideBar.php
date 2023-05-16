@@ -1,5 +1,5 @@
 <body>
-<div class="loader"></div>
+<!-- <div class="loader"></div> -->
 <div id="app">
 <div class="main-wrapper main-wrapper-1">
 <div class="navbar-bg"></div>
@@ -28,13 +28,15 @@
 		</li>
 		<li class="dropdown"><a href="#" data-toggle="dropdown"
               class="nav-link dropdown-toggle nav-link-lg nav-link-user">
-			  
+			  <?php  if($userrow['admin_photo']){?>
+                          <img src="uploads/<?php  echo $userrow['admin_photo']; ?>" class="user-img-radious-style" alt="Admin image" id="preveiew-img" />
+                          <?php  } else{ ?>
 			<img alt="image" src="assets/img/user.png"
                 class="user-img-radious-style">
-			 
+			 <?php } ?>
 			<span class="d-sm-none d-lg-inline-block"></span></a>
 			<div class="dropdown-menu dropdown-menu-right pullDown">
-				<div class="dropdown-title">Hello Admin!</div>
+				<div class="dropdown-title">Hello <?= $userrow['admin_name'] ;?>!</div>
 				<a href="profile" class="dropdown-item has-icon"> <i class="far
                     fa-user"></i> Admin Profile </a> <a href="settings.php" class="dropdown-item has-icon"> <i class="fas fa-cog"></i> General Settings </a>
 				<div class="dropdown-divider"></div>
@@ -57,22 +59,32 @@
 				<ul class="dropdown-menu">
 					<li><a class="nav-link" href="add-category.php">Add new</a></li>  
 					 
-					<li><a class="nav-link  " href="view-categories.php?show=active"> Listing</a> </li>
+					<li><a class="nav-link  " href="view-categories.php"> View Categories</a> </li>
 					 
 
 				</ul>
 			</li>
-			<li class="dropdown" > <a href="#" class="nav-link has-dropdown "><i data-feather="grid"></i><span>Pages</span></a>
+			<li class="dropdown <?php if($Page == 'pages'){ ?> active <?php } ?>" > <a href="#" class="nav-link has-dropdown "><i data-feather="grid"></i><span>Pages</span></a>
 				<ul class="dropdown-menu">
-					<li><a class="nav-link" href="add-form.php">Add new</a></li>  
+					<li><a class="nav-link" href="add-page.php">Add new</a></li>  
 					 
-					<li><a class="nav-link  " href="view-pages.php?show=active"> Listing</a> </li>
+					<li><a class="nav-link  " href="view-pages.php"> View Pages</a> </li>
 					 
 
 				</ul>
 			</li>
 			 
-			<li class="dropdown" > <a href="#" class="nav-link has-dropdown "><i data-feather="grid"></i><span>Portfolio</span></a>
+			<li class="dropdown <?php if($Page == 'portfolio'){ ?> active <?php } ?>" > <a href="#" class="nav-link has-dropdown "><i data-feather="grid"></i><span>Portfolio</span></a>
+				<ul class="dropdown-menu">
+					<li><a class="nav-link" href="add-form.php">Add new</a></li>  
+					 
+					<li><a class="nav-link  " href="view-pages.php"> Listing</a> </li>
+					 
+
+				</ul>
+			</li>
+
+			<li class="dropdown <?php if($Page == 'contacts'){ ?> active <?php } ?>" > <a href="#" class="nav-link has-dropdown "><i data-feather="grid"></i><span>Contacts</span></a>
 				<ul class="dropdown-menu">
 					<li><a class="nav-link" href="add-form.php">Add new</a></li>  
 					 
@@ -81,17 +93,7 @@
 
 				</ul>
 			</li>
-
-			<li class="dropdown" > <a href="#" class="nav-link has-dropdown "><i data-feather="grid"></i><span>Contacts</span></a>
-				<ul class="dropdown-menu">
-					<li><a class="nav-link" href="add-form.php">Add new</a></li>  
-					 
-					<li><a class="nav-link  " href="view-pages.php?show=active"> Listing</a> </li>
-					 
-
-				</ul>
-			</li>
-			<li class="dropdown" > <a href="#" class="nav-link has-dropdown "><i data-feather="grid"></i><span>Quotes</span></a>
+			<li class="dropdown <?php if($Page == 'quotes'){ ?> active <?php } ?>" > <a href="#" class="nav-link has-dropdown "><i data-feather="grid"></i><span>Quotes</span></a>
 				<ul class="dropdown-menu">
 					<li><a class="nav-link" href="add-form.php">Add new</a></li>  
 					 

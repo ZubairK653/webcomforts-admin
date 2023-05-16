@@ -10,8 +10,8 @@ if(isset($_POST['login']))
        $login = $user->loginAdmin($_POST['email'], $_POST['password']); 
       // print_r($login) ;
         if(!empty($login)) {
-           echo $_SESSION['userid'] = $login['admin_id'];
-           echo $_SESSION['name']   = $login['admin_name'];	
+            $_SESSION['userid'] = $login['admin_id'];
+            $_SESSION['name']   = $login['admin_name'];	
 
             header("Location:../index.php");
 

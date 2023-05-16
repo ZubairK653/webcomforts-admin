@@ -1,13 +1,9 @@
 <?php 
 // check session
-require 'includes/checkSession.php';
-
-
-  if(isset($_POST['upload-image'])){
-		if($_FILES['image']['error'] == 0){ 
-			$image_upload = new ImageUpload($_FILES);
-		}
-	}
+require_once 'includes/include.php';
+ $userid = $_SESSION['userid'];
+  
+ $userrow =  $user->getUserData($userid);
 
 $PageTitle   = 'Admin Profile';
 $ContentType = '';
@@ -17,10 +13,7 @@ $Page        = 'setting';
 
 include "MasterTop.php";
 include "SideBar.php"
-
 ?>
-
-      
       <!-- Start Main Content -->
       <!-- Main Content -->
       <div class="main-content">
@@ -35,16 +28,28 @@ include "SideBar.php"
                       </div>
                     </div>
 
-             <?php } ?>       
+             <?php } ?>     
+             
+             <?php if(isset($_POST['error'])){ ?>
+             <div class="alert alert-danger alert-dismissible show fade">
+                      <div class="alert-body">
+                        <button class="close" data-dismiss="alert">
+                          <span>×</span>
+                        </button>
+                       <strong><p class="error">Error! <?php echo $_POST['error']; ?></p></strong>
+                      </div>
+                    </div>
+                    <?php } ?>
+              <?php if(isset($_POST['success'])){ ?>
               <div class="alert alert-success alert-dismissible show fade ">
                       <div class="alert-body">
                         <button class="close" data-dismiss="alert">
                           <span>×</span>
                         </button>
-                       <strong>Success!</strong>  
+                       <strong>Success! <?php echo $_POST['success']; ?></strong>  
                       </div>
                     </div>
-
+            <?php } ?>
               
         <section class="section">
           <div class="section-body">
@@ -55,7 +60,7 @@ include "SideBar.php"
                     <h4><?php echo $PageTitle; ?></h4>
                   </div>
                   <form action="process/update_profile.php" method="post" enctype="multipart/form-data" >
-                  <input type="hidden" name="user_id" id="userid" value="<?php ?>" />
+                  <input type="hidden" name="user_id" id="userid" value="<?php echo $userid; ?>" />
                   <input type="hidden" name="bcheck" value="true" />
                   <div class="card-body">
                     <div class="form-group row mb-1">
@@ -67,14 +72,14 @@ include "SideBar.php"
                            
                         </div>
                         <div  class="image-preview pull-right" > 
-                          <!-- <?php // if($ROW['photo']){?>
-                          <img src="../assets/images/<?php // echo $ROW['photo']; ?>" class="img-fluid" alt="No Image" id="preveiew-img" />
-                          <?php // } ?> -->
+                           <?php  if($userrow['admin_photo']){?>
+                          <img src="uploads/<?php  echo $userrow['admin_photo']; ?>" class="img-fluid" alt="No Image" id="preveiew-img" />
+                          <?php  } ?>
                         </div>
                        
                       </div>
                     </div>
-                    <?php // if($ROW['photo'] != NULL){?>
+                    <?php  if($userrow['admin_photo'] != NULL){?>
                       <div class="form-group row mb-4" id="remove-box">
                           <div class="col-sm-12 col-md-9">
                               <div  class="pull-right"> 
@@ -82,11 +87,11 @@ include "SideBar.php"
                               </div>
                           </div>
                       </div>
-                      <?php // } ?>
+                      <?php  } ?>
                     <div class="form-group row mt-4 mb-4">
                       <label class="col-form-label text-md-right col-12 col-md-3 col-lg-3">User Name (Requird)</label>
                       <div class="col-sm-12 col-md-7">
-                        <input type="text" class="form-control" name="username" id="username" placeholder="Enter username" value="<?php // echo $ROW['username']; ?>" required >
+                        <input type="text" class="form-control" name="username" id="username" placeholder="Enter username" value="<?= $userrow['admin_username']; ?>" required >
                       </div>
                     </div> 
 

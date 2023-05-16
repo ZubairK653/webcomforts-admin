@@ -1,6 +1,6 @@
 <?php
-// check session
-require '../includes/checkSession.php';
+// 
+require_once '../includes/include.php';
 
 $db         = new DatabaseConnection;
 $conn       = $db->conn;

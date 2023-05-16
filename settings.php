@@ -1,6 +1,8 @@
 <?php 
 // check session
-require 'includes/checkSession.php';
+// require 'includes/checkSession.php';
+// require 'includes/userController.php';
+require_once 'includes/include.php';
 
 $loginid = $_SESSION['userid'];
 
